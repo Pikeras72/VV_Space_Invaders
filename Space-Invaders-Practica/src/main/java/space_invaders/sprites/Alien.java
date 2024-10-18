@@ -25,7 +25,7 @@ public class Alien extends Sprite {
      * Por ejemplo, si la coordenada X indicada supera el margen de la pantalla, se asignará a X el valor máximo posible, es decir, el ancho de la pantalla.
      * Si se introduce alguna coordenada negativa, se reemplazará por 0.
      * */
-    private void initAlien(int x, int y) {
+    private void initAlien(int x, int y) {  //MÉTODO A COMPROBAR
 
         if (x> Commons.BOARD_WIDTH){
             this.x = Commons.BOARD_WIDTH;
@@ -54,7 +54,7 @@ public class Alien extends Sprite {
      * Mueve horizontalmente el alien en la dirección indicada
      * @param direction posición hacia la izquierda o derecha hacia la que se mueve el alien
      * */
-    public void act(int direction) {
+    public void act(int direction) { //MÉTODO A COMPROBAR
 
         this.x = direction+Commons.ALIEN_WIDTH;
     }
@@ -90,7 +90,7 @@ public class Alien extends Sprite {
          * Si el valor X o Y indiados superan el margen de la pantalla, se les asignará el valor máximo permitido.
          * Si se introduce algún valor negativo, será reemplazado por 0.
          * */
-        private void initBomb(int x, int y) {
+        private void initBomb(int x, int y) {   //MÉTODO A COMPROBAR
 
             setDestroyed(true);
 

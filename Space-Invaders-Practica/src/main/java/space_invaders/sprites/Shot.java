@@ -22,7 +22,7 @@ public class Shot extends Sprite {
      * Si alguna de las coordenadas indicadas es mayor al máximo permitido, se le asignará el valor máximo permitido.
      * Si se introducen valores negativos de coordenada, se asignará el mínimo permitido (0).
      * */
-    private void initShot(int x, int y) {
+    private void initShot(int x, int y) {  //MÉTODO A COMPROBAR
 
         var shotImg = "src/main/resources/images/shot.png";
         var ii = new ImageIcon(shotImg);

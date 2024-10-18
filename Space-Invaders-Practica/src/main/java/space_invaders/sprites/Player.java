@@ -35,7 +35,7 @@ public class Player extends Sprite {
      * Mueve la posición del jugador a la izquierda o a la derecha.
      * Si el jugador ha alcanzado el borde de la pantalla y se intenta mover fuera de la pantalla, lo mantendrá quieto en el borde.
      * */
-    public void act() {
+    public void act() {  //MÉTODO A COMPROBAR
 
         x += dx;
 
@@ -56,7 +56,7 @@ public class Player extends Sprite {
      * Cualquier otra tecla de movimiento no produce acción
      * @param e tecla presionada
      * */
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {  //MÉTODO A COMPROBAR
 
         int key = e.getKeyCode();
 
@@ -77,7 +77,7 @@ public class Player extends Sprite {
      * Cualquier otra tecla de movimiento no produce acción
      * @param e tecla presionada
      * */
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {  //MÉTODO A COMPROBAR
 
         int key = e.getKeyCode();
 
