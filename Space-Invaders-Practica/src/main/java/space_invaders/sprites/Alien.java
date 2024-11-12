@@ -1,8 +1,10 @@
 package space_invaders.sprites;
 
 import main.Commons;
-
 import javax.swing.ImageIcon;
+import static org.junit.jupiter.api.Assertions.*;
+import static  org.junit.jupiter.params;
+
 
 public class Alien extends Sprite {
 
@@ -25,6 +27,8 @@ public class Alien extends Sprite {
      * Por ejemplo, si la coordenada X indicada supera el margen de la pantalla, se asignará a X el valor máximo posible, es decir, el ancho de la pantalla.
      * Si se introduce alguna coordenada negativa, se reemplazará por 0.
      * */
+
+
     private void initAlien(int x, int y) {  //MÉTODO A COMPROBAR
 
         if (x> Commons.BOARD_WIDTH){
@@ -57,6 +61,23 @@ public class Alien extends Sprite {
     public void act(int direction) { //MÉTODO A COMPROBAR
 
         this.x = direction+Commons.ALIEN_WIDTH;
+    }
+
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvSource(value={
+            "170, 170, 170, 170",
+            "170, -5, 170, 0",
+            "170, 360, 170, Commons.BOARD_HEIGHT",
+            "-5, 170, 0, 170",
+            "360, 170, Commons.BOARD_WIDTH, 170"})
+    void testInitAlien(int x, int y, int xEsperada, int yEsperada) {
+        //Contexto
+        Alien alien = new Alien(0, 0);
+        //Funcion a probar
+        alien.initAlien(x, y);
+        //Resultado
+        assertEquals(xEsperada, alien.getX(), "La posición X del Alien no es correcta.");
+        assertEquals(yEsperada, alien.getY(), "La posición Y del Alien no es correcta.");
     }
 
     /**
