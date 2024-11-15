@@ -77,7 +77,11 @@ public class Board extends JPanel {
 
     /**
      * Incializa la partida.
-     * Crea las filas de alienígenas, asignando a cada uno su posición inicial
+     * Crea las filas de alienígenas, creando tantos alienígenas como indica la constante Commons.NUMBER_OF_ALIENS_TO_DESTROY.
+     * Coloca los alienígenas en formación, partiendo para su coordenada X desde la posición Commons.ALIEN_INIT_X y para la coordenada Y
+     * desde Commons.ALIEN_INIT_Y. Para generar la formación en cuadrícula, va sumando 18 a cada una de las coordenadas entre un
+     * alienígena y el siguiente.
+     * También crea un jugador y el disparo con el que podrá matar a los aliens.
      * */
     private void gameInit() {
 
@@ -225,7 +229,7 @@ public class Board extends JPanel {
     }
     /**
      * Actualiza el estado del juego de acuerdo a las teclas pulsadas.
-     * Si se han destruido todos los alienígenas, el juego finaliza la partida.
+     * Si se han destruido todos los alienígenas, es decir, el contador de muertes (deaths) es igual al número de alienígenas, el juego finaliza la partida.
      * Si no se han destruido, actualiza el estado del juego.
      * */
     private void update() {
@@ -243,7 +247,8 @@ public class Board extends JPanel {
     }
     /**
      * Actualiza el estado de los disparos a los alienígenas.
-     * Comprueba la posición del alien y del disparo realizado y, si coinciden, activa la animación de explosión del alienígena, lo elimina del tablero y aumenta en uno el contador de alienígenas derribados (deaths) en uno.
+     * Comprueba la posición del alien y del disparo realizado y, si el disparo acierta al alien (es decir, las coordenadas X e Y del disparo están entre las coordenadas x+ancho del alienígena, e y+alto del alienígena),
+     * activa la animación de explosión del alienígena, lo elimina del tablero y aumenta en uno el contador de alienígenas derribados (deaths) en uno.
      * */
     private void update_shots() {
         if (this.shot.isVisible()) {
@@ -282,8 +287,9 @@ public class Board extends JPanel {
         }
     }
     /**
-     * Actualiza los el estado de los aliens
-     * Mueve el alienígena hacia la izquierda o a la derecha, en función de la dirección indicada (direction=1 izquierda, direction=-1 derecha), y baja todos los aliens una posición hacia abajo (Commons.GO_DOWN)
+     * Actualiza los el estado de los aliens,
+     * Mueve el alienígena hacia la izquierda o a la derecha una posición en función de la dirección indicada (direction=-1 izquierda, direction=1 derecha).
+     * Si se ha alcanzado el borde del tablero y no se puede mover el alienígena en la dirección indicada, se cambia de dirección y se mueven todos los alienígenas una posición hacia abajo (Commons.GO_DOWN).
      * Si los alienígenas alcanzan el borde inferior del tablero, el juego termina y se nos muestra por pantalla el mensaje "Invasion!"
      * */
     private void update_aliens(){
@@ -340,10 +346,12 @@ public class Board extends JPanel {
 
     }
     /**
-     * Actualiza el estado del jugador tras los disparos de los alienígenas.
-     * Si el jugador ha disparado a una bomba y acierta, la bomba se destruye.
-     * Si la bomba ha llegado al suelo, se destruye y desaparece
+     * Actualiza las bombas de los alenígenas.
+     * Genera una bomba por alienígena. Si una bomba ha sido destruida, o no ha sido creada por primera vez, la crea asignándole
+     * las coordenadas actuales del alienígena, y establece su estado "destroyed" a falso.
+     * Si la bomba ha llegado al suelo (Commons.GROUND-Commons.BOMB_HEIGHT), se destruye y desaparece (cambia destroyed a true).
      * Si el jugador ha sido alcanzado por una bomba, el jugador cambiará su estado "setDying" a verdadero, y su imagen se cambiará por la animación de explosión
+     * Si no sucede ninguna de las condiciones anteriores, la bomba bajará verticalmente una posición.
      * */
     private void update_bomb(){
         var generator = new Random();
