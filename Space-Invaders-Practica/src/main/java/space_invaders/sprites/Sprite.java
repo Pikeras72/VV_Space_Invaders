@@ -108,4 +108,18 @@ public class Sprite {
 
         return this.dying;
     }
+    /**
+     * Asigna el int dX que se suma a la x del elemento
+     * @param dx
+     * */
+    public void setDx(int dx){
+        this.dx = dx;
+    }
+    /**
+     * Devuelve el int dX que se suma a la x del elemento
+     * @return dx
+     * */
+    public int getDx(){
+        return dx;
+    }
 }
