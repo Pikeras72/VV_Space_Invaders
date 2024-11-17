@@ -229,7 +229,8 @@ public class Board extends JPanel {
     }
     /**
      * Actualiza el estado del juego de acuerdo a las teclas pulsadas.
-     * Si se han destruido todos los alienígenas, es decir, el contador de muertes (deaths) es igual al número de alienígenas, el juego finaliza la partida.
+     * Si se han destruido todos los alienígenas, es decir, el contador de muertes (deaths) es igual al número de alienígenas,
+     * el juego finaliza la partida.
      * Si no se han destruido, actualiza el estado del juego.
      * */
     private void update() {
