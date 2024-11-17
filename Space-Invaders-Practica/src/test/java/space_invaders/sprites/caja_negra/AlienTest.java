@@ -15,11 +15,17 @@ class AlienTest {
 
     @ParameterizedTest
     @CsvSource({
-            "100, 100, 100, 100"    ,                  // Coordenadas válidas
-            "-1, 100, 0, 100",                // Coordenada X fuera de límite
-            "359, 100, 358, 100" // Coordenada X máxima
+            "100, 100, 100, 100",       // Coordenadas válidas
+            "-1, 100, 0, 100",          // Coordenada x fuera de límite inferior
+            "359, 100, 358, 100",       // Coordenada x fuera del limite superior
+            "100, -1, 100, 0",          // Coordenada y fuera del limite inferior
+            "100, 351, 100, 350",       // Coordenada y fuera del limite superior
+            "-1, -1, 0, 0",             // Coordenada x e y fuera del limite inferior
+            "-1, 351, 0, 350",
+            "359, -1, 358, 0",
+            "359, 351, 358, 350"
     })
-    void testInitAlien(int x, int y, int expectedX, int expectedY) throws InterruptedException {
+    void testInitAlien(int x, int y, int expectedX, int expectedY) {
         Alien alien = new Alien(x, y);
 
         assertEquals(expectedX, alien.getX(), "Coordenada x incorrecta");
@@ -35,6 +41,25 @@ class AlienTest {
         Alien alien = new Alien(initialX, 100);
         alien.act(direction);
         assertEquals(expectedX, alien.getX());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "100, 100, 100, 100",       // Coordenadas válidas
+            "358, 100, 358, 100",
+            "359, 100, 358, 100",
+            "0, 100, 0, 100",
+            "-1, 100, 0, 100",
+            "100, 350, 100, 350",
+            "100, 351, 100, 350",
+            "100, 0, 100, 0",
+            "100, -1, 100, 0"
+    })
+    void testInitBomb(int x, int y, int expectedX, int expectedY){
+        Alien.Bomb bomb = new Alien.Bomb(x, y);
+
+        assertEquals(expectedX, bomb.getX(), "Coordenada x incorrecta");
+        assertEquals(expectedY, bomb.getY(), "Coordenada y incorrecta");
     }
 }
 
