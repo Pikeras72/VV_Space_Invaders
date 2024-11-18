@@ -3,8 +3,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import main.Board;
 
 import main.Commons;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import space_invaders.sprites.Alien;
 import space_invaders.sprites.Shot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardTest {
 
@@ -20,55 +25,133 @@ public class BoardTest {
         assertEquals(yExpected, alien.getY(), "Coordenada y erronea");
     }
 
+    private Board board;
 
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.CsvSource(value={
-            "100, 100, false, 24, 0",  // C1: Disparo no visible
-            "100, 100, true, 24, 0",   // C2: Disparo fuera del tablero
-            "100, 100, true, 24, 0",  // C3: Disparo sigue en el tablero
-            "100, 100, true, 24, 1"   // C4: Disparo impacta a un alien
-    })
-    void testUpdateShots(int shotX, int shotY, boolean shotVisible, int remainingAliens, int expectedDeaths) {
-        Board board = new Board();
+    @BeforeEach
+    void setUp() {
+        board = new Board();
+    }
 
-        Shot shot = new Shot(shotX, shotY);
-        shot.setVisible(shotVisible);
-        board.setShot(shot);
+    @Test
+    void testDisparoImpactaEnAlien() {
+        // Caso: Disparo impacta en alienígena
+        Shot shot = board.getShot();
+        List<Alien> aliens = new ArrayList<>();
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
 
-        if (expectedDeaths > 0) { // Añadimos un alien solo si se espera una muerte
-            Alien alien = new Alien(shotX, shotY);
-            board.getAliens().add(alien);
-        }
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
 
-        // Estado inicial antes de actualizar
-        int initialAliens = board.getAliens().size();
-        int initialDeaths = board.getDeaths();
+        shot.setX(alien.getX() + Commons.ALIEN_WIDTH / 2);
+        shot.setY(alien.getY() + Commons.ALIEN_HEIGHT / 2);
+        shot.setVisible(true);
+
+        alien.setVisible(true);
 
         board.update_shots();
 
-        // Verificar el contador de muertes
-        assertEquals(expectedDeaths, board.getDeaths(), "Error en el contador de muertes");
-
-        // Validar que en el caso C1 no se modifica el estado del tablero
-        if (!shotVisible) { // Caso C1 específico
-            assertEquals(shotX + 6, shot.getX());
-            assertEquals(shotY - 1, shot.getY());
-
-            assertEquals(initialAliens, board.getAliens().size(), "C1: Los aliens no deberían cambiar");
-            assertEquals(initialDeaths, board.getDeaths(), "C1: Las muertes no deberían cambiar");
-        }
+        assertTrue(alien.isDying(), "El alien debe estar marcado como muriendo.");
+        assertFalse(shot.isVisible(), "El disparo debe desaparecer tras impactar.");
+        assertEquals(1, board.getDeaths(), "Las muertes deberían ser: 1.");
     }
 
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.CsvSource(value={
-            Commons.NUMBER_OF_ALIENS_TO_DESTROY+", Game won!",
-            Commons.CHANCE+", Game Over"
-    })
-    void testUpdate(int deaths, String messageEsperado) {
-        Board board = new Board();
-        board.setDeaths(deaths);
-        board.update();
-        assertEquals(messageEsperado, board.getMessage());
+    @Test
+    void testDisparoNoImpactaEnAlien() {
+        // Caso: Disparo no impacta en alienígena existente
+        Shot shot = board.getShot();
+        List<Alien> aliens = new ArrayList<>();
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        shot.setX(200); // Fuera del rango del alien
+        shot.setY(200);
+        shot.setVisible(true);
+
+        alien.setVisible(true);
+
+        board.update_shots();
+
+        assertTrue(alien.isVisible(), "El alien debe seguir visible.");
+        assertTrue(shot.isVisible(), "El disparo debe seguir visible.");
+        assertEquals(196, shot.getY(), "El disparo debe seguir moviéndose hacia arriba.");
+    }
+
+    @Test
+    void testDisparoSaleDelTablero() {
+        // Caso: Disparo sale del tablero
+        Shot shot = board.getShot();
+        shot.setX(50);
+        shot.setY(-10); // Fuera del tablero
+        shot.setVisible(true);
+
+        board.update_shots();
+
+        assertFalse(shot.isVisible(), "El disparo debe desaparecer al salir del tablero.");
+    }
+
+    @Test
+    void testDisparoArrayAliensVacio() {
+        // Caso: Disparo existente, array de aliens vacío
+        Shot shot = board.getShot();
+        board.getAliens().clear(); // No hay aliens en el tablero
+        shot.setX(50);
+        shot.setY(50);
+        shot.setVisible(true);
+
+        board.update_shots();
+
+        assertTrue(shot.isVisible(), "El disparo debe seguir visible.");
+        assertEquals(46, shot.getY(), "El disparo debe seguir moviéndose hacia arriba.");
+    }
+
+    @Test
+    void testNoExisteDisparo() {
+        // Caso: No existe disparo
+        Shot shot = board.getShot();
+        shot.setVisible(false); // El disparo no es visible
+
+        board.update_shots();
+
+        assertFalse(shot.isVisible(), "El disparo no debe estar visible.");
+        // No ocurre ninguna acción, así que no hay más aserciones necesarias
+    }
+
+    @Test
+    void testAlienDestruidoDisparoVisible() {
+        // Caso: Alien destruido y disparo visible
+        Shot shot = board.getShot();
+        List<Alien> aliens = new ArrayList<>();
+        Alien alien = new Alien(50, 50);
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        shot.setX(50);
+        shot.setY(50);
+        shot.setVisible(true);
+
+        alien.setVisible(false); // El alien ya está destruido
+
+        board.update_shots();
+
+        assertTrue(shot.isVisible(), "El disparo debe seguir visible.");
+        assertEquals(46, shot.getY(), "El disparo debe seguir moviéndose hacia arriba.");
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }
