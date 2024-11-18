@@ -21,9 +21,9 @@ class AlienTest {
             "100, -1, 100, 0",          // Coordenada y fuera del limite inferior
             "100, 351, 100, 350",       // Coordenada y fuera del limite superior
             "-1, -1, 0, 0",             // Coordenada x e y fuera del limite inferior
-            "-1, 351, 0, 350",
-            "359, -1, 358, 0",
-            "359, 351, 358, 350"
+            "-1, 351, 0, 350",          // Coordenada x fuera del limite inferior e y fuera del limite superior
+            "359, -1, 358, 0",          // Coordenada x fuera del limite superior e y fuera del límite inferior
+            "359, 351, 358, 350"        // Coordenada x e y fuera del limite superior
     })
     void testInitAlien(int x, int y, int expectedX, int expectedY) {
         Alien alien = new Alien(x, y);

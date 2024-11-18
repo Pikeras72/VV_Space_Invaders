@@ -8,8 +8,8 @@ class ShotTest {
 
     @ParameterizedTest
     @CsvSource({
-            "100, 100, 106, 99",        // Coordenadas válidas
-            "359, 100, 365, 99",        // Coordenadas límites
+            "100, 100, 106, 99",
+            "359, 100, 365, 99",
             "358, 100, 364, 99",
             "0, 100, 6, 99",
             "-1, 100, 5, 99",
