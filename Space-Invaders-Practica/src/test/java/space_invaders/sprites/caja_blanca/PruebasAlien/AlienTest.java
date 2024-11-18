@@ -23,4 +23,17 @@ public class AlienTest {
         assertEquals(xEsperada, alien.getX(), "La posición X del Alien no es correcta");
         assertEquals(yEsperada, alien.getY(), "La posición Y del Alien no es correcta");
     }
+
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvSource(value={
+            "360,-5,358,0",
+            "170,170,170,170",
+    })
+    void testInitBomb(int x, int y, int xEsperada, int yEsperada) {
+        Alien.Bomb bomb = new Alien.Bomb(x, y);
+
+        assertEquals(xEsperada, bomb.getX(), "La posición X del Alien no es correcta");
+        assertEquals(yEsperada, bomb.getY(), "La posición Y del Alien no es correcta");
+    }
+
 }
