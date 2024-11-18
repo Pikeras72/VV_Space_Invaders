@@ -1,5 +1,3 @@
-package space_invaders.sprites.caja_blanca.PruebasAlien;
-
 //import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +32,17 @@ public class AlienTest {
 
         assertEquals(xEsperada, bomb.getX(), "La posición X del Alien no es correcta");
         assertEquals(yEsperada, bomb.getY(), "La posición Y del Alien no es correcta");
+    }
+
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvSource(value={
+            "1,171"
+    })
+    void testAct(int x, int xEsperada) {
+        Alien alien = new Alien(170,170);
+        alien.act(1);
+
+        assertEquals(xEsperada, alien.getX(), "La posición X del Alien no es correcta");
     }
 
 }

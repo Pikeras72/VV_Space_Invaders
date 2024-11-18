@@ -1,5 +1,3 @@
-package space_invaders.sprites.caja_blanca.PruebasPlayer;
-
 //import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
