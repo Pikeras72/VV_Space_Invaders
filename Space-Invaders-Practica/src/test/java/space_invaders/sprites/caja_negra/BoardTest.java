@@ -39,16 +39,21 @@ class BoardTest {
 
     @ParameterizedTest
     @CsvSource({
-            "100, 0, true",   // Disparo fuera del tablero
-            "100, 100, false" // Disparo impacta en un alien
+            "false, true, 100, 0, true",
+            "true, true, 100, 0, true",
+            "true, false, 100, 0, true",
+            "true, true, 100, 0, true",
+
     })
-    void testUpdateShots(int shotX, int shotY, boolean shotsEmpty) {
+    void testUpdateShots(boolean shotVisible, boolean alienVisible, int shotX, int shotY, boolean shotsEmpty) {
         Board board = new Board();
         Shot shot = new Shot(shotX, shotY);
+        shot.setVisible(shotVisible);
         board.setShot(shot);
 
         if (!shotsEmpty) {
             Alien alien = new Alien(shotX, shotY);
+            alien.setVisible(alienVisible);
             board.getAliens().add(alien);
         }
 
@@ -68,5 +73,14 @@ class BoardTest {
         board.getAliens().add(alien);
         board.update_aliens();
         assertEquals(gameOver, board.isInGame());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Commons.BOARD_HEIGHT - 1, true", // Aliens alcanzan borde inferior
+            "Commons.BOARD_WIDTH - 1, false" // Alien alcanza borde derecho
+    })
+    void testUpdateBomb(){
+
     }
 }
