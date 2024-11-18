@@ -287,4 +287,104 @@ public class BoardTest {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void testAliensMoveInCorrectDirection() {
+        Board board = new Board();
+        Alien alien = board.getAliens().get(0);
+        alien.setY(Commons.GROUND - Commons.ALIEN_HEIGHT - 1); // Alien no está en el borde inferior
+        alien.setVisible(true);
+
+        int initialX = alien.getX();
+
+        board.update_aliens();
+
+        // Verificar que los aliens se movieron en la dirección indicada
+        if (board.getDirection() == -2) { // Izquierda
+            assertTrue(alien.getX() < initialX);
+        } else if (board.getDirection() == 2) { // Derecha
+            assertTrue(alien.getX() > initialX);
+        }
+    }
+
+    @Test
+    public void testAlienReachesRightLimit() {
+        Board board = new Board();
+        Alien alien = board.getAliens().get(0);
+        alien.setX(Commons.BOARD_WIDTH - Commons.BORDER_RIGHT); // En el límite derecho
+        board.setDirection(1); // Dirección derecha
+
+        int initialY = alien.getY();
+
+        board.update_aliens();
+
+        // Verificar que cambió la dirección a 0 y los aliens bajaron
+        assertEquals(0, board.getDirection());
+        assertEquals(initialY + Commons.GO_DOWN, alien.getY());
+    }
+
+    @Test
+    public void testAlienReachesLeftLimit() {
+        Board board = new Board();
+        Alien alien = board.getAliens().get(0);
+        alien.setX(Commons.BORDER_LEFT); // En el límite izquierdo
+        board.setDirection(-1); // Dirección izquierda
+
+        int initialY = alien.getY();
+
+        board.update_aliens();
+
+        // Verificar que cambió la dirección a 1 y los aliens bajaron
+        assertEquals(1, board.getDirection());
+        assertEquals(initialY + Commons.GO_DOWN, alien.getY());
+    }
+
+    @Test
+    public void testAlienReachesBottomLimit() {
+        Board board = new Board();
+        Alien alien = board.getAliens().get(0);
+        alien.setY(Commons.GROUND - Commons.ALIEN_HEIGHT + 1); // Más allá del borde inferior
+        alien.setVisible(true);
+
+        board.update_aliens();
+
+        // Verificar que el juego termina con el mensaje esperado
+        assertFalse(board.isInGame());
+        assertEquals("Invasion!", board.getMessage());
+    }
+
+    @Test
+    public void testNoAliensVisible() {
+        Board board = new Board();
+
+        // Marcar todos los aliens como no visibles
+        for (Alien alien : board.getAliens()) {
+            alien.setVisible(false);
+        }
+
+        board.update_aliens();
+
+        // Comprobamos que el juego sigue activo y no hay cambios
+        assertTrue(board.isInGame());
+        for (Alien alien : board.getAliens()) {
+            assertFalse(alien.isVisible());
+        }
+    }
 }
