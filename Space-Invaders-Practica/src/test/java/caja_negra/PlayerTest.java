@@ -64,7 +64,8 @@ public class PlayerTest {
     @ParameterizedTest
     @CsvSource({
             "0,39",
-            "0,37"
+            "0,37",
+            ","
     })
     void testKeyReleased(int dxEsperada, int keyCode) {
         Player player = new Player();

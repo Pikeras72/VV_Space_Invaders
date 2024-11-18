@@ -30,8 +30,8 @@ public class AlienTest {
     void testInitBomb(int x, int y, int xEsperada, int yEsperada) {
         Alien.Bomb bomb = new Alien.Bomb(x, y);
 
-        assertEquals(xEsperada, bomb.getX(), "La posición X del Alien no es correcta");
-        assertEquals(yEsperada, bomb.getY(), "La posición Y del Alien no es correcta");
+        assertEquals(xEsperada, bomb.getX(), "La posición X de la Bomba no es correcta");
+        assertEquals(yEsperada, bomb.getY(), "La posición Y de la Bomba no es correcta");
     }
 
     @org.junit.jupiter.params.ParameterizedTest
@@ -42,7 +42,7 @@ public class AlienTest {
         Alien alien = new Alien(170,170);
         alien.act(1);
 
-        assertEquals(xEsperada, alien.getX(), "La posición X del Alien no es correcta");
+        assertEquals(xEsperada, alien.getX());
     }
 
 }
