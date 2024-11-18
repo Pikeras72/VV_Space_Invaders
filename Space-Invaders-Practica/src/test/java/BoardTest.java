@@ -6,6 +6,7 @@ import main.Commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import space_invaders.sprites.Alien;
+import space_invaders.sprites.Player;
 import space_invaders.sprites.Shot;
 
 import java.util.ArrayList;
@@ -151,6 +152,138 @@ public class BoardTest {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    void testAlienGeneraBomba() {
+        // Caso: Alien genera bomba
+        List<Alien> aliens = new ArrayList<>();
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        alien.setVisible(true);
+        bomb.setDestroyed(true);
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        board.update_bomb();
+
+        assertFalse(bomb.isDestroyed(), "La bomba no debe estar destruida.");
+        assertEquals(alien.getX(), bomb.getX(), "La bomba debe generarse en la coordenada X del alien.");
+        assertEquals(alien.getY(), bomb.getY(), "La bomba debe generarse en la coordenada Y del alien.");
+    }
+
+    @Test
+    void testBombaColisionaConJugador() {
+        // Caso: Bomba colisiona con el jugador
+        Player player = board.getPlayer();
+        player.setVisible(true);
+        player.setX(50);
+        player.setY(50);
+
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setX(player.getX());
+        bomb.setY(player.getY());
+        bomb.setDestroyed(false);
+
+        List<Alien> aliens = new ArrayList<>();
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        board.update_bomb();
+
+        assertTrue(player.isDying(), "El jugador debe estar en estado de morir.");
+        assertTrue(bomb.isDestroyed(), "La bomba debe ser destruida tras colisionar con el jugador.");
+    }
+
+    @Test
+    void testBombaNoColisionaYSigueCayendo() {
+        // Caso: Bomba no colisiona y sigue cayendo
+        Player player = board.getPlayer();
+        player.setVisible(true);
+        player.setX(100);
+        player.setY(100);
+
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setX(50); // Fuera del rango del jugador
+        bomb.setY(80);
+        bomb.setDestroyed(false);
+
+        List<Alien> aliens = new ArrayList<>();
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        board.update_bomb();
+
+        assertFalse(bomb.isDestroyed(), "La bomba no debe ser destruida si no colisiona.");
+        assertEquals(81, bomb.getY(), "La posición Y de la bomba debe incrementarse en 1.");
+    }
+
+    @Test
+    void testBombaAlcanzaElSuelo() {
+        // Caso: Bomba alcanza el suelo
+        Alien alien = new Alien(50, 50);
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setX(50);
+        bomb.setY(Commons.GROUND - Commons.BOMB_HEIGHT); // En el límite del suelo
+        bomb.setDestroyed(false);
+
+        List<Alien> aliens = new ArrayList<>();
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        board.update_bomb();
+
+        assertFalse(bomb.isDestroyed(), "La bomba debe ser destruida tras alcanzar el suelo.");
+    }
+
+    @Test
+    void testAlienNoVisibleYBombaDestruida() {
+        // Caso: Alien no visible y bomba destruida
+        Alien alien = new Alien(50, 50);
+        alien.setVisible(false); // Alien no visible
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(true);
+
+        List<Alien> aliens = new ArrayList<>();
+        aliens.add(alien);
+
+        board.getAliens().clear();
+        board.getAliens().addAll(aliens);
+
+        board.update_bomb();
+
+        assertTrue(bomb.isDestroyed(), "La bomba debe permanecer destruida si el alien no es visible.");
+    }
 
 
 
