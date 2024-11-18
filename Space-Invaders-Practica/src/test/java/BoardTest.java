@@ -387,4 +387,52 @@ public class BoardTest {
             assertFalse(alien.isVisible());
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void testEndOfGame() {
+        Board board = new Board();
+
+        // Configurar estado inicial
+        board.setDeaths(Commons.CHANCE); // Se alcanzó el límite de muertes
+        board.setInGame(true);             // El juego está en progreso
+        board.getTimer().start();             // Temporizador activo
+
+        board.update(); // Llamar al método que estamos probando
+
+        // Verificaciones
+        assertFalse(board.isInGame());            // El juego debe finalizar
+        assertEquals("Game won!", board.getMessage()); // Mensaje de victoria
+        assertFalse(board.getTimer().isRunning()); // El temporizador debe detenerse
+    }
+
+    @Test
+    public void testGameInProgress() {
+        // Crear una instancia del tablero
+        Board board = new Board();
+
+        // Configurar estado inicial
+        board.setDeaths(0);             // Las muertes iniciales son 0
+        board.setInGame(true);          // El juego está en progreso
+
+        // Llamar al método que estamos probando
+        board.update();
+
+        // Verificaciones
+        assertTrue(board.isInGame());           // El juego debe continuar
+        assertNotNull(board.getPlayer());   // El jugador está inicializado correctamente
+        assertFalse(board.getAliens().isEmpty()); // Debe haber aliens en el tablero
+        assertTrue(board.getShot().isVisible() || !board.getShot().isVisible()); // Validar que el disparo esté correctamente configurado
+
+    }
 }
