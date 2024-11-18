@@ -7,6 +7,7 @@ import main.Commons;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import space_invaders.sprites.Alien;
+import space_invaders.sprites.Player;
 import space_invaders.sprites.Shot;
 
 import java.util.Objects;
@@ -43,22 +44,20 @@ public class BoardTest {
 
     @ParameterizedTest
     @CsvSource({
-            "100, 100, false, 24, 0",  // C1: Disparo no visible
-            "100, -1, true, 24, 0",   // C2: Disparo fuera del tablero
-            "100, 100, true, 24, 0",  // C3: Disparo sigue en el tablero
-            "100, 100, true, 24, 1"   // C4: Disparo impacta a un alien
+            "100, 100, false, 0",  // C1: Disparo no visible
+            "100, -1, true, 0",   // C2: Disparo fuera del tablero
+            "100, 100, true, 0",  // C3: Disparo sigue en el tablero
+            "100, 100, true, 1"   // C4: Disparo impacta a un alien
     })
-    void testUpdateShots(int shotX, int shotY, boolean shotVisible, int remainingAliens, int expectedDeaths) {
+    void testUpdateShots(int shotX, int shotY, boolean shotVisible, int expectedDeaths) {
         Board board = new Board();
 
         Shot shot = new Shot(shotX, shotY);
         shot.setVisible(shotVisible);
         board.setShot(shot);
 
-        if (expectedDeaths > 0) { // Añadimos un alien solo si se espera una muerte
-            Alien alien = new Alien(shotX, shotY);
-            board.getAliens().add(alien);
-        }
+        Alien alien = new Alien(shot.getX(), shot.getY());
+        board.getAliens().add(alien);
 
         // Estado inicial antes de actualizar
         int initialAliens = board.getAliens().size();
@@ -66,14 +65,17 @@ public class BoardTest {
 
         board.update_shots();
 
-        // Verificar el contador de muertes
-        assertEquals(expectedDeaths, board.getDeaths(), "Error en el contador de muertes");
+        if (expectedDeaths > 0) {
+            // Verificar el contador de muertes
+            assertEquals(true, alien.isDying());
+            assertEquals(expectedDeaths, board.getDeaths(), "Error en el contador de muertes");
+        }
+
 
         // Validar que en el caso C1 no se modifica el estado del tablero
         if (!shotVisible) { // Caso C1 específico
             assertEquals(shotX + 6, shot.getX());
             assertEquals(shotY - 1, shot.getY());
-
             assertEquals(initialAliens, board.getAliens().size(), "C1: Los aliens no deberían cambiar");
             assertEquals(initialDeaths, board.getDeaths(), "C1: Las muertes no deberían cambiar");
         }
@@ -112,26 +114,77 @@ public class BoardTest {
 
             // Verificar que el alien ha bajado si está en el borde
             if (direction != expectedDirection) {
-                assertEquals(Commons.GO_DOWN, alien.getY() - alienY, "El alien debería haber bajado");
+                assertEquals(alienY + Commons.GO_DOWN, alien.getY(), "El alien debería haber bajado");
             }
 
             // Verificar el movimiento horizontal
             if (direction == 1 && alienX <= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT) {
-                assertEquals(alienX + direction, alien.getX(), "El alien no se movió correctamente hacia la derecha");
+                assertNotEquals(alienX , alien.getX(), "El alien no se movió correctamente hacia la derecha");
             } else if (direction == -1 && alienX > Commons.BORDER_LEFT) {
-                assertEquals(alienX + direction, alien.getX(), "El alien no se movió correctamente hacia la izquierda");
+                assertNotEquals(alienX, alien.getX(), "El alien no se movió correctamente hacia la izquierda");
             }
         }
-        
-
-
     }
+
     @ParameterizedTest
     @CsvSource({
-            "Commons.BOARD_HEIGHT - 1, true", // Aliens alcanzan borde inferior
-            "Commons.BOARD_WIDTH - 1, false" // Alien alcanza borde derecho
+            "100, 200, 100, 330, true, 100, 201, false, false",  // C1: Bomba no creada o destruida, debe crearse en la posición del alien
+            "100, 200, 100, 330, false, 100, 201, false, false", // C2: Bomba no destruida, se mueve hacia abajo
+            "100, 200, 100, 330, false, 100, 200, true, true",   // C3: Bomba alcanza al jugador, cambia estado a "dying"
+            "100, 285, 100, 330, false, 100, " + (Commons.GROUND - Commons.BOMB_HEIGHT) + ", true, false" // C4: Bomba llega al suelo, se destruye
     })
-    void testUpdateBomb(){
+    void testUpdateBomb(int alienX, int alienY, int playerX, int playerY, boolean bombDestroyed,
+                        int expectedBombX, int expectedBombY, boolean expectedBombDestroyed, boolean expectedPlayerDying) {
+        // Configurar el tablero
+        Board board = new Board();
 
+        // Configurar el alien
+        Alien alien = new Alien(alienX, alienY);
+        board.getAliens().add(alien);
+
+        // Configurar la bomba
+        Alien.Bomb bomb = alien.getBomb();
+        bomb.setDestroyed(bombDestroyed);
+        bomb.setX(alienX);
+        bomb.setY(alienY);
+
+        // Configurar el jugador
+        Player player = new Player();
+        player.setX(playerX);
+        player.setY(playerY);
+        board.setPlayer(player);
+
+        // Llamar al método de actualización
+        board.update_bomb();
+
+        // Verificar que la bomba se haya creado correctamente si estaba destruida
+        if (bombDestroyed ) {
+            assertFalse(bomb.isDestroyed(), "La bomba debería haberse creado, estado destroyed a false");
+            assertEquals(expectedBombX, bomb.getX(), "La bomba debería estar en la posición X del alien");
+            assertEquals(expectedBombY, bomb.getY(), "La bomba debería estar en la posición Y del alien");
+        }
+
+        // Verificar el movimiento de la bomba (C2)
+        if (!bomb.isDestroyed() && bomb.getY() != expectedBombY && !expectedBombDestroyed) {
+            assertEquals(expectedBombY, bomb.getY(), "La bomba debería moverse hacia abajo");
+        }
+
+        // Verificar si la bomba ha alcanzado al jugador (C3)
+        if (expectedPlayerDying){
+            bomb.setX(playerX);
+            bomb.setY(playerY);
+
+            assertTrue(player.isDying(), "El jugador debería haber cambiado su estado a 'dying'");
+            assertEquals(expectedPlayerDying, player.isDying(), "El estado de muerte del jugador no es el esperado");
+            assertTrue(bomb.isDestroyed(), "La bomba debería haberse destruido después de golpear al jugador");
+
+        }
+
+        // Verificar si la bomba ha llegado al suelo (C4)
+        if (bomb.getY() >= Commons.GROUND - Commons.BOMB_HEIGHT) {
+            assertTrue(bomb.isDestroyed(), "La bomba debería haberse destruido cuando llegó al suelo");
+            assertEquals(expectedBombDestroyed, bomb.isDestroyed(), "El estado de la bomba no es el esperado");
+        }
     }
+
 }

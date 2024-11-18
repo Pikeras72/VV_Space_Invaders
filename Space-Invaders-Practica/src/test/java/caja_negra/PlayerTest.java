@@ -65,7 +65,6 @@ public class PlayerTest {
     @CsvSource({
             "0,39",
             "0,37",
-            ","
     })
     void testKeyReleased(int dxEsperada, int keyCode) {
         Player player = new Player();
