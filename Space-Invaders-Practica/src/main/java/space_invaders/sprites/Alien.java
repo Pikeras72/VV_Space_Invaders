@@ -27,18 +27,19 @@ public class Alien extends Sprite {
      * */
     private void initAlien(int x, int y) {
 
-        if (x> Commons.BOARD_WIDTH){
+        if (x > Commons.BOARD_WIDTH) {
             this.x = Commons.BOARD_WIDTH;
-        } if (x<0){
+        } else if (x < 0) {
             this.x = 0;
-        } if (y> Commons.BOARD_HEIGHT){
-            this.y = Commons.BOARD_HEIGHT;
-        } if (y<0){
-            this.y=0;
-        }
-        else
-        {
+        } else {
             this.x = x;
+        }
+
+        if (y > Commons.BOARD_HEIGHT) {
+            this.y = Commons.BOARD_HEIGHT;
+        } else if (y < 0) {
+            this.y = 0;
+        } else {
             this.y = y;
         }
 
@@ -56,7 +57,7 @@ public class Alien extends Sprite {
      * */
     public void act(int direction) {
 
-        this.x = direction+Commons.ALIEN_WIDTH;
+        this.x += direction;
     }
 
     /**
