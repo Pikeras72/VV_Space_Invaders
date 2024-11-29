@@ -90,7 +90,7 @@ public class Board extends JPanel {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
 
-                var alien = new Alien(Commons.ALIEN_INIT_Y + 18 * j,
+                var alien = new Alien(Commons.ALIEN_INIT_X + 18 * j, //LINEA CAMBIADA CON ERROR
                         Commons.ALIEN_INIT_Y + 18 * i);
                 this.aliens.add(alien);
             }
