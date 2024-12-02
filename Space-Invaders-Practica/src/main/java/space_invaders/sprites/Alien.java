@@ -29,17 +29,17 @@ public class Alien extends Sprite {
 
         if (x > Commons.BOARD_WIDTH) {
             this.x = Commons.BOARD_WIDTH;
-        } else if (x < 0) {
+        } else if (x < 0) { //LINEA CAMBIADA CON ERROR
             this.x = 0;
-        } else {
+        } else { //ELSE SEPARADO EN 2
             this.x = x;
         }
 
         if (y > Commons.BOARD_HEIGHT) {
             this.y = Commons.BOARD_HEIGHT;
-        } else if (y < 0) {
+        } else if (y < 0) { //LINEA CAMBIADA CON ERROR
             this.y = 0;
-        } else {
+        } else { //ELSE SEPARADO EN 2
             this.y = y;
         }
 
@@ -57,7 +57,7 @@ public class Alien extends Sprite {
      * */
     public void act(int direction) {
 
-        this.x += direction;
+        this.x += direction; //LINEA CAMBIADA CON ERROR
     }
 
     /**
@@ -93,15 +93,22 @@ public class Alien extends Sprite {
          * */
         private void initBomb(int x, int y) {
 
-            setDestroyed(true);
+            setDestroyed(false); //LINEA CAMBIADA CON ERROR
 
-            if (x<= Commons.BOARD_WIDTH && y<= Commons.BOARD_HEIGHT) {
-                this.x += x;
-                this.y += y;
-            } else
-            {
+            if (x>Commons.BOARD_WIDTH) { //MÉTODO COMPLETO CAMBIADO CON ERROR
                 this.x = Commons.BOARD_WIDTH;
-                this.y = Commons.BOARD_HEIGHT;
+            } else if (x<0) {
+                this.x=0;
+            } else {
+                this.x=x;
+            }
+
+            if (y>Commons.BOARD_HEIGHT) {
+                this.y=Commons.BOARD_HEIGHT;
+            } else if (y<0) {
+                this.y=0;
+            } else {
+                this.y=y;
             }
 
             var bombImg = "src/main/resources/images/bomb.png";
