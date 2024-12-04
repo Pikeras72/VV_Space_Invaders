@@ -24,29 +24,30 @@ public class Player extends Sprite {
         width = ii.getImage().getWidth(null);
         setImage(ii.getImage());
 
-        int START_X = 270;
+        int START_X = Math.round((float) (Commons.BOARD_WIDTH - Commons.BORDER_RIGHT
+                - Commons.BORDER_LEFT) / 2) + Commons.BORDER_LEFT; //Corrección posición x del jugador al inicio
         setX(START_X);
 
-        int START_Y = 280;
+        int START_Y = Commons.GROUND + Commons.PLAYER_HEIGHT/2; //Corrección posición y del jugador al inicio
         setY(START_Y);
     }
 
     /**
      * Mueve la posición del jugador a la izquierda o a la derecha.
      * Si el jugador ha alcanzado el borde de la pantalla y se intenta mover fuera de la pantalla,
-     * lo mantendrá quieto en el borde.     * */
+     * lo mantendrá quieto en el borde.  * */
     public void act() {
 
         x += dx;
 
-        if (x >= 2) {
+        if (x < Commons.BORDER_LEFT + Math.round((float) Commons.PLAYER_WIDTH /2)) { //Antes x >= 2. Limite izquierdo.
 
-            x = 2;
+            x = Commons.BORDER_LEFT + Math.round((float) Commons.PLAYER_WIDTH /2); //Volver al limite izquierdo.
         }
 
-        if (x >= Commons.BOARD_WIDTH - 2 * width) {
+        if (x > (Commons.BOARD_WIDTH - Commons.BORDER_RIGHT - Commons.PLAYER_WIDTH/2))  { //Antes Commons.BOARD_WIDTH - 2 * width
 
-            x = Commons.BOARD_WIDTH - 2 * width;
+            x = (Commons.BOARD_WIDTH - Commons.BORDER_RIGHT - Commons.PLAYER_WIDTH/2); //Antes Commons.BOARD_WIDTH - 2 * width
         }
     }
     /**
@@ -62,7 +63,7 @@ public class Player extends Sprite {
 
         if (key == KeyEvent.VK_LEFT) {
 
-            dx = 2;
+            dx = -2; //Corrección signo incorrecto. Antes dx=2.
         }
 
         if (key == KeyEvent.VK_RIGHT) {

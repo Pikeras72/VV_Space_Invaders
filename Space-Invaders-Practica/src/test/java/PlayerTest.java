@@ -10,8 +10,9 @@ import java.awt.event.KeyEvent;
 public class PlayerTest {
 
     @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.CsvSource(value={
-            "2,-1,1",
+    @org.junit.jupiter.params.provider.CsvSource(value={ //Cambio en los test debido a modificación en la lógica
+            "13,-1,13",
+            "321,1,321", //Nuevo caso de prueba antes imposible. Límite derecho.
             "100,1,101"
     })
     void testAct(int x, int dx, int xEsperada) {
@@ -64,8 +65,8 @@ public class PlayerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "178,330"
+    @CsvSource({ //Cambio en los test debido al nuevo centro y bordes de la pantalla
+            "167,295"
     })
     void testInitPlayer(int xEsperada, int yEsperada) {
         Player alien = new Player();
