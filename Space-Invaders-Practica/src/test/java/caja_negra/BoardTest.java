@@ -18,7 +18,7 @@ public class BoardTest {
     @CsvSource({
             "0, " + Commons.ALIEN_INIT_X + ", " + Commons.ALIEN_INIT_Y,     // Primer alien
             "8, 186, 23",                                                   // Alien en el medio
-            "23, 258, 77"                                                   // Último alien
+            "23, 240, 59"                                                   // Último alien  //LINEA CAMBIADA
     })
     void testGameInit(int alienIndex, int xExpected, int yExpected) {
         Board board = new Board();

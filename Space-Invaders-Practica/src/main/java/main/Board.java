@@ -234,7 +234,7 @@ public class Board extends JPanel {
      * */
     public void update() {
 
-        if (deaths == Commons.CHANCE) {
+        if (deaths == Commons.NUMBER_OF_ALIENS_TO_DESTROY) {  //LINEA CAMBIADA CON ERROR
             inGame = false;
             timer.stop();
             message = "Game won!";
@@ -270,7 +270,7 @@ public class Board extends JPanel {
                         var ii = new ImageIcon(explImg);
                         alien.setImage(ii.getImage());
                         alien.setDying(true);
-                        deaths--;
+                        deaths++;  //LINEA CAMBIADA CON ERROR
                         this.shot.die();
                     }
                 }

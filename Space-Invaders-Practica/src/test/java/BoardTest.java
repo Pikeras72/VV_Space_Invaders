@@ -404,7 +404,7 @@ public class BoardTest {
         Board board = new Board();
 
         // Configurar estado inicial
-        board.setDeaths(Commons.CHANCE); // Se alcanzó el límite de muertes
+        board.setDeaths(Commons.NUMBER_OF_ALIENS_TO_DESTROY); // Se alcanzó el límite de muertes //LINEA CAMBIADA
         board.setInGame(true);             // El juego está en progreso
         board.getTimer().start();             // Temporizador activo
 
