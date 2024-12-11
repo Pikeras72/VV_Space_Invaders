@@ -297,9 +297,9 @@ public class Board extends JPanel {
 
             int x = alien.getX();
 
-            if (x <= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) {
+            if (x >= Commons.BOARD_WIDTH - Commons.BORDER_RIGHT && direction != -1) { //LINEA CAMBIADA CON ERROR (ANTES: x <= ...)
 
-                direction = 0;
+                direction = -1; //LINEA CAMBIADA CON ERROR (ANTES: direction = 0)
 
                 Iterator<Alien> i1 = this.aliens.iterator();
 
