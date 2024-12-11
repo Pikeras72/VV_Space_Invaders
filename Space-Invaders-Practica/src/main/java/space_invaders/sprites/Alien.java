@@ -93,7 +93,7 @@ public class Alien extends Sprite {
          * */
         private void initBomb(int x, int y) {
 
-            setDestroyed(true);
+            setDestroyed(true); //NO ES UN ERROR
 
             if (x>Commons.BOARD_WIDTH) { //MÉTODO COMPLETO CAMBIADO CON ERROR
                 this.x = Commons.BOARD_WIDTH;
