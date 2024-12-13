@@ -319,7 +319,7 @@ public class Board extends JPanel {
                 while (i2.hasNext()) {
 
                     Alien a = i2.next();
-                    a.setX(a.getY() + Commons.GO_DOWN);
+                    a.setY(a.getY() + Commons.GO_DOWN); // LIINEA CAMBIADA POR ERROR (ANTES: a.setX(a.getY() + Commons.GO_DOWN))
                 }
             }
         }
@@ -366,7 +366,7 @@ public class Board extends JPanel {
                 bomb.setDestroyed(false);
                 bomb.setX(alien.getX());
                 bomb.setY(alien.getY());
-            }
+            } 
 
             int bombX = bomb.getX();
             int bombY = bomb.getY();
@@ -382,7 +382,7 @@ public class Board extends JPanel {
 
                     var ii = new ImageIcon(explImg);
                     this.player.setImage(ii.getImage());
-                    this.player.setDying(false);
+                    this.player.setDying(true); //LINEA CAMBIADA CON ERROR (ANTES FALSE)
                     bomb.setDestroyed(true);
                 }
             }
@@ -393,7 +393,7 @@ public class Board extends JPanel {
 
                 if (bomb.getY() >= Commons.GROUND - Commons.BOMB_HEIGHT) {
 
-                    bomb.setDestroyed(false);
+                    bomb.setDestroyed(true); //LINEA CAMBIADA CON ERROR (ANTES FALSE)
                 }
             }
         }
