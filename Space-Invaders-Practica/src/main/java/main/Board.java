@@ -319,7 +319,7 @@ public class Board extends JPanel {
                 while (i2.hasNext()) {
 
                     Alien a = i2.next();
-                    a.setY(a.getY() + Commons.GO_DOWN); // LIINEA CAMBIADA POR ERROR (ANTES: a.setX(a.getY() + Commons.GO_DOWN))
+                    a.setY(a.getY() + Commons.GO_DOWN); // LINEA CAMBIADA POR ERROR (ANTES: a.setX(a.getY() + Commons.GO_DOWN))
                 }
             }
         }
