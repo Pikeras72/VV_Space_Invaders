@@ -84,7 +84,7 @@ public class BoardTest {
     @ParameterizedTest
     @CsvSource({
             // Alien X, Alien Y, Direction, Expected Direction, Expected Message
-            "10, 278, 1, 1, Invasion!",         // C1: Aliens alcanzan el borde inferior
+            "10, 279, 1, 1, Invasion!",         // C1: Aliens alcanzan el borde inferior
             "328, 100, 1, -1, null",                // C2: Aliens alcanzan el borde derecho
             "5, 100, -1, 1, null",                  // C3: Aliens alcanzan el borde izquierdo
             "100, 100, 1, 1, null",                 // C4: Aliens se mueven normalmente a la derecha
