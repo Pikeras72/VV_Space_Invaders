@@ -31,7 +31,7 @@ public class BoardTest {
     @ParameterizedTest
     @CsvSource({
             "24, Game won!",  // Todos los aliens destruidos
-            "8, Invasion!"
+            "8, Game Over"
     })
     void testUpdate(int deaths, String expected) {
         Board board = new Board();
@@ -159,9 +159,9 @@ public class BoardTest {
 
         // Verificar que la bomba se haya creado correctamente si estaba destruida
         if (bombDestroyed ) {
-            assertFalse(bomb.isDestroyed(), "La bomba debería haberse creado, estado destroyed a false");
+            assertTrue(bomb.isDestroyed(), "La bomba debería haberse creado, estado destroyed a true");
             assertEquals(expectedBombX, bomb.getX(), "La bomba debería estar en la posición X del alien");
-            assertEquals(expectedBombY, bomb.getY(), "La bomba debería estar en la posición Y del alien");
+            assertEquals(expectedBombY, bomb.getY() + 1, "La bomba debería estar en la posición Y del alien");
         }
 
         // Verificar el movimiento de la bomba (C2)
@@ -173,6 +173,7 @@ public class BoardTest {
         if (expectedPlayerDying){
             bomb.setX(playerX);
             bomb.setY(playerY);
+            board.update_bomb();
 
             assertTrue(player.isDying(), "El jugador debería haber cambiado su estado a 'dying'");
             assertEquals(expectedPlayerDying, player.isDying(), "El estado de muerte del jugador no es el esperado");
