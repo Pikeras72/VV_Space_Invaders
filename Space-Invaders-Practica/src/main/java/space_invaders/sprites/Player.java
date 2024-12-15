@@ -18,7 +18,7 @@ public class Player extends Sprite {
      * */
     private void initPlayer() {
 
-        var playerImg = "src/main/resources/images/player.png";
+        var playerImg = "Space-Invaders-Practica/src/main/resources/images/player.png";
         var ii = new ImageIcon(playerImg);
 
         width = ii.getImage().getWidth(null);
@@ -28,7 +28,7 @@ public class Player extends Sprite {
                 - Commons.BORDER_LEFT) / 2) + Commons.BORDER_LEFT; //Corrección posición x del jugador al inicio
         setX(START_X);
 
-        int START_Y = Commons.GROUND + Commons.PLAYER_HEIGHT/2; //Corrección posición y del jugador al inicio
+        int START_Y = (Commons.GROUND - Commons.PLAYER_HEIGHT/2)-1; //Corrección posición y del jugador al inicio
         setY(START_Y);
     }
 

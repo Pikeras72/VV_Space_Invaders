@@ -45,7 +45,7 @@ public class Alien extends Sprite {
 
         bomb = new Bomb(x, y);
 
-        var alienImg = "src/main/resources/images/alien.png";
+        var alienImg = "Space-Invaders-Practica/src/main/resources/images/alien.png";
         var ii = new ImageIcon(alienImg);
 
         setImage(ii.getImage());
@@ -111,7 +111,7 @@ public class Alien extends Sprite {
                 this.y=y;
             }
 
-            var bombImg = "src/main/resources/images/bomb.png";
+            var bombImg = "Space-Invaders-Practica/src/main/resources/images/bomb.png";
             var ii = new ImageIcon(bombImg);
             setImage(ii.getImage());
         }

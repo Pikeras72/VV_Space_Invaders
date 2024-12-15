@@ -66,12 +66,12 @@ public class PlayerTest {
 
     @ParameterizedTest
     @CsvSource({ //Cambio en los test debido al nuevo centro y bordes de la pantalla
-            "167,295"
+            "167, 284"
     })
     void testInitPlayer(int xEsperada, int yEsperada) {
-        Player alien = new Player();
+        Player player = new Player();
 
-        assertEquals(xEsperada, alien.getX(), "La posición X del Player no es correcta");
-        assertEquals(yEsperada, alien.getY(), "La posición Y del Player no es correcta");
+        assertEquals(xEsperada, player.getX(), "La posición X del Player no es correcta");
+        assertEquals(yEsperada, player.getY(), "La posición Y del Player no es correcta");
     }
 }

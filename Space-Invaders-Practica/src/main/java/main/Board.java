@@ -32,7 +32,7 @@ public class Board extends JPanel {
     private int deaths = 0;
 
     private boolean inGame = true;
-    private String explImg = "src/main/resources/images/explosion.png";
+    private String explImg = "Space-Invaders-Practica/src/main/resources/images/explosion.png";
     private String message = "Game Over";
 
     private Timer timer;
@@ -56,7 +56,7 @@ public class Board extends JPanel {
     public Board() {
 
         initBoard();
-        gameInit();
+        //gameInit(); ERROR: gameInit se ejecuta 2 veces
     }
     /**
      * Inicializa un nuevo tablero con las dimensiones predefinidas, le asigna un fondo de color negro, inicializa el contador de juego e inicia la partida.
@@ -270,8 +270,18 @@ public class Board extends JPanel {
                         var ii = new ImageIcon(explImg);
                         alien.setImage(ii.getImage());
                         alien.setDying(true);
-                        deaths++;  //LINEA CAMBIADA CON ERROR
+                        deaths++;
                         this.shot.die();
+
+                        //ERROR: Crear un temporizador para eliminar al alienígena después de mostrar la explosión, ya que esta se quedaba estática y tapaba los shots
+                        Timer timer = new Timer(500, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                alien.setVisible(false);
+                            }
+                        });
+                        timer.setRepeats(false); // Asegurarse de que el temporizador no se repita
+                        timer.start();
                     }
                 }
             }
@@ -366,7 +376,7 @@ public class Board extends JPanel {
                 bomb.setDestroyed(false);
                 bomb.setX(alien.getX());
                 bomb.setY(alien.getY());
-            } 
+            }
 
             int bombX = bomb.getX();
             int bombY = bomb.getY();
