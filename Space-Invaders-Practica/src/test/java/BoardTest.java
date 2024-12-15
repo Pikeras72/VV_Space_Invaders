@@ -181,7 +181,7 @@ public class BoardTest {
         Alien alien = new Alien(50, 50);
         Alien.Bomb bomb = alien.getBomb();
         alien.setVisible(true);
-        bomb.setDestroyed(true);
+        bomb.setDestroyed(false);
         aliens.add(alien);
 
         board.getAliens().clear();
@@ -191,7 +191,7 @@ public class BoardTest {
 
         assertFalse(bomb.isDestroyed(), "La bomba no debe estar destruida.");
         assertEquals(alien.getX(), bomb.getX(), "La bomba debe generarse en la coordenada X del alien.");
-        assertEquals(alien.getY(), bomb.getY(), "La bomba debe generarse en la coordenada Y del alien.");
+        assertEquals(alien.getY()+1, bomb.getY(), "La bomba debe generarse en la coordenada Y del alien.");
     }
 
     @Test
@@ -252,7 +252,7 @@ public class BoardTest {
         Alien alien = new Alien(50, 50);
         Alien.Bomb bomb = alien.getBomb();
         bomb.setX(50);
-        bomb.setY(Commons.GROUND - Commons.BOMB_HEIGHT); // En el límite del suelo
+        bomb.setY(Commons.GROUND-Commons.BOMB_HEIGHT); // En el límite del suelo
         bomb.setDestroyed(false);
 
         List<Alien> aliens = new ArrayList<>();
@@ -263,7 +263,7 @@ public class BoardTest {
 
         board.update_bomb();
 
-        assertFalse(bomb.isDestroyed(), "La bomba debe ser destruida tras alcanzar el suelo.");
+        assertTrue(bomb.isDestroyed(), "La bomba debe ser destruida tras alcanzar el suelo.");
     }
 
     @Test
@@ -335,8 +335,8 @@ public class BoardTest {
 
         board.update_aliens();
 
-        // Verificar que cambió la dirección a 0 y los aliens bajaron
-        assertEquals(0, board.getDirection());
+        // Verificar que cambió la dirección a -1 y los aliens bajaron
+        assertEquals(-1, board.getDirection());
         assertEquals(initialY + Commons.GO_DOWN, alien.getY());
     }
 

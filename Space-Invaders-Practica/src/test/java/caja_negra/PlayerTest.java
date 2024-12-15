@@ -16,7 +16,7 @@ public class PlayerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "167,295" //Cambio en el caso de prueba debido al nuevo centro con los nuevos bordes
+            "167,284" //Cambio en el caso de prueba debido al nuevo centro con los nuevos bordes
     })
     void testInitPlayer(int xEsperada, int yEsperada) {
         Player alien = new Player();
