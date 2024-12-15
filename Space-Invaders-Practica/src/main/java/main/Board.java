@@ -7,11 +7,7 @@ import space_invaders.sprites.Shot;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -171,39 +167,49 @@ public class Board extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        d = getSize(); // Actualizar el tamaño de lan pantalla como queramos
         doDrawing(g);
     }
+
+    private double getScaleX() {
+        return d.width / (double) Commons.BOARD_WIDTH;
+    }
+
+    private double getScaleY() {
+        return d.height / (double) Commons.BOARD_HEIGHT;
+    }
+
     /**
      * Genera y coloca todos los elementos en la interfaz gráfica.
      * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
      * */
     private void doDrawing(Graphics g) {
-
         g.setColor(Color.black);
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
 
-        if (inGame) {
+        Graphics2D g2d = (Graphics2D) g;
+        double scaleX = getScaleX();
+        double scaleY = getScaleY();
+        g2d.scale(scaleX, scaleY);
 
+        if (inGame) {
             g.drawLine(0, Commons.GROUND,
                     Commons.BOARD_WIDTH, Commons.GROUND);
-
-            drawAliens(g);
-            drawPlayer(g);
-            drawShot(g);
-            drawBombing(g);
-
+            drawAliens(g2d);
+            drawPlayer(g2d);
+            drawShot(g2d);
+            drawBombing(g2d);
         } else {
-
             if (timer.isRunning()) {
                 timer.stop();
             }
-
-            gameOver(g);
+            gameOver(g2d);
         }
 
         Toolkit.getDefaultToolkit().sync();
     }
+
     /**
      * Genera en la interfaz un mensaje indicando que se ha perdido la partida :(
      * NO ES NECESARIO PROBAR ESTE MÉTODO MEDIANTE PRUEBAS UNITARIAS
