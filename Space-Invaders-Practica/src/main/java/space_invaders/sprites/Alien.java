@@ -1,12 +1,17 @@
 package space_invaders.sprites;
 
+import main.Board;
 import main.Commons;
 
 import javax.swing.ImageIcon;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Alien extends Sprite {
 
     private Bomb bomb;
+    private static final Logger log = Logger.getLogger(Board.class.getName());
 
     /**
      * Inicializa un nuevo alien
@@ -43,7 +48,12 @@ public class Alien extends Sprite {
             this.y = y;
         }
 
+        log.log(Level.INFO, "-----------------------------------------------------------------------------");
+        log.log(Level.INFO, "Bomb antes de ejecutar new Bomb() --> initBomb() : is null? " + (bomb == null) );
         bomb = new Bomb(x, y);
+        log.log(Level.INFO, "Bomb después de ejecutar new Bomb() --> initBomb() : is null? " + (bomb == null) );
+        log.log(Level.INFO, "-----------------------------------------------------------------------------");
+
 
         var alienImg = "Space-Invaders-Practica/src/main/resources/images/alien.png";
         var ii = new ImageIcon(alienImg);

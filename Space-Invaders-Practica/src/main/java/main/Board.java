@@ -21,7 +21,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class Board extends JPanel {
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Board extends JPanel  {
 
     private Dimension d;
     private List<Alien> aliens;
@@ -36,6 +40,10 @@ public class Board extends JPanel {
     private String message = "Game Over";
 
     private Timer timer;
+
+    private static final Logger log = Logger.getLogger(Board.class.getName());
+    boolean mostrarLogs = true;
+
 
     public Player getPlayer() {
         return this.player;
@@ -87,6 +95,7 @@ public class Board extends JPanel {
 
         this.aliens = new ArrayList<>();
 
+        log.log(Level.INFO, "Lista de Aliens antes de ejecutar new Alien() --> init Alien() : " + aliens.size() );
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
 
@@ -95,8 +104,12 @@ public class Board extends JPanel {
                 this.aliens.add(alien);
             }
         }
+        log.log(Level.INFO, "Lista de Aliens después de ejecutar new Alien() --> initAlien() : " + aliens.size() );
 
+        log.log(Level.INFO, "Lista de Aliens antes de ejecutar new Player() --> initPlayer() : is null? " + (player == null) );
         this.player = new Player();
+        log.log(Level.INFO, "Lista de Aliens después de ejecutar new Player() --> initPlayer() : is null? " + (player == null) );
+
         this.shot = new Shot();
     }
     /**
@@ -242,10 +255,34 @@ public class Board extends JPanel {
             message = "Game won!";
         }
 
+        if (mostrarLogs){
+            log.log(Level.INFO, "-----------------------------------------------------------------------------");
+            log.log(Level.INFO, "Posición antes de ejecutar act() del Player: " + this.player.getX());
+        }
         this.player.act();
+        if (mostrarLogs){
+            log.log(Level.INFO, "Posición después de ejecutar act() del Player: " + this.player.getX());
+        }
+
+        if (mostrarLogs){
+            log.log(Level.INFO, "-----------------------------------------------------------------------------");
+            log.log(Level.INFO, "Posición antes de ejecutar update_shots() : " + this.shot.getY());
+        }
         update_shots();
+        if (mostrarLogs){
+            log.log(Level.INFO, "Posición después de ejecutar update_shots() : " + this.shot.getY());
+            log.log(Level.INFO, "-----------------------------------------------------------------------------");
+        }
+
         update_aliens();
+
+        if (mostrarLogs){
+            log.log(Level.INFO, "-----------------------------------------------------------------------------");
+        }
+
         update_bomb();
+
+        mostrarLogs = false;
     }
     /**
      * Actualiza el estado de los disparos a los alienígenas.
@@ -272,7 +309,7 @@ public class Board extends JPanel {
                         var ii = new ImageIcon(explImg);
                         alien.setImage(ii.getImage());
                         alien.setDying(true);
-                        deaths++;
+                        deaths++;  // LINEA CAMBIADA POR ERROR
                         this.shot.die();
 
                         //ERROR: Crear un temporizador para eliminar al alienígena después de mostrar la explosión, ya que esta se quedaba estática y tapaba los shots
@@ -350,8 +387,14 @@ public class Board extends JPanel {
                     inGame = false;
                     message = "Invasion!";
                 }
-
+                if (mostrarLogs){
+                    log.log(Level.INFO, "Posición antes de ejecutar act() de Alien: (" + alien.getX() + ", " + alien.getY() + ")");
+                }
                 alien.act(direction);
+                if (mostrarLogs){
+                    log.log(Level.INFO, "Posición después de ejecutar act() de Alien: (" + alien.getX() + ", " + alien.getY() + ")");
+                }
+
             }
         }
 
@@ -401,7 +444,14 @@ public class Board extends JPanel {
 
             if (!bomb.isDestroyed()) {
 
+                if (mostrarLogs){
+                    log.log(Level.INFO, "Posición antes de ejecutar update_bomb() : (" + bomb.getX() + ", " + bomb.getY() + ")");
+                }
                 bomb.setY(bomb.getY() + 1);
+                if (mostrarLogs){
+                    log.log(Level.INFO, "Posición después de ejecutar update_bomb() : (" + bomb.getX() + ", " + bomb.getY() + ")");
+                }
+
 
                 if (bomb.getY() >= Commons.GROUND - Commons.BOMB_HEIGHT) {
 

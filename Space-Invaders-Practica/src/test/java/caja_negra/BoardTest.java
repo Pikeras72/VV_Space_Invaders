@@ -128,10 +128,10 @@ public class BoardTest {
 
     @ParameterizedTest
     @CsvSource({
-            "100, 200, 100, 330, true, 100, 201, false, false",  // C1: Bomba no creada o destruida, debe crearse en la posición del alien
-            "100, 200, 100, 330, false, 100, 201, false, false", // C2: Bomba no destruida, se mueve hacia abajo
-            "100, 200, 100, 330, false, 100, 200, true, true",   // C3: Bomba alcanza al jugador, cambia estado a "dying"
-            "100, 285, 100, 330, false, 100, " + (Commons.GROUND - Commons.BOMB_HEIGHT) + ", true, false" // C4: Bomba llega al suelo, se destruye
+            "100, 200, 167, 295, true, 100, 201, false, false",  // C1: Bomba no creada o destruida, debe crearse en la posición del alien
+            "100, 200, 167, 295, false, 100, 201, false, false", // C2: Bomba no destruida, se mueve hacia abajo
+            "100, 200, 167, 295, false, 100, 200, true, true",   // C3: Bomba alcanza al jugador, cambia estado a "dying"
+            "100, 285, 167, 295, false, 100, " + (Commons.GROUND - Commons.BOMB_HEIGHT) + ", true, false" // C4: Bomba llega al suelo, se destruye
     })
     void testUpdateBomb(int alienX, int alienY, int playerX, int playerY, boolean bombDestroyed,
                         int expectedBombX, int expectedBombY, boolean expectedBombDestroyed, boolean expectedPlayerDying) {
