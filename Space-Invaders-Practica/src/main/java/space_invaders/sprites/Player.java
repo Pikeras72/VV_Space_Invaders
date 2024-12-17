@@ -28,7 +28,7 @@ public class Player extends Sprite {
                 - Commons.BORDER_LEFT) / 2) + Commons.BORDER_LEFT; //Corrección posición x del jugador al inicio
         setX(START_X);
 
-        int START_Y = (Commons.GROUND - Commons.PLAYER_HEIGHT/2)-1; //Corrección posición y del jugador al inicio
+        int START_Y = (Commons.GROUND - Commons.PLAYER_HEIGHT); //Corrección posición y del jugador al inicio
         setY(START_Y);
     }
 
@@ -40,9 +40,9 @@ public class Player extends Sprite {
 
         x += dx;
 
-        if (x < Commons.BORDER_LEFT + Math.round((float) Commons.PLAYER_WIDTH /2)) { //Antes x >= 2. Limite izquierdo.
+        if (x < Commons.BORDER_LEFT ) { //Antes x >= 2. Limite izquierdo.
 
-            x = Commons.BORDER_LEFT + Math.round((float) Commons.PLAYER_WIDTH /2); //Volver al limite izquierdo.
+            x = Commons.BORDER_LEFT ; //Volver al limite izquierdo.
         }
 
         if (x > (Commons.BOARD_WIDTH - Commons.BORDER_RIGHT - Commons.PLAYER_WIDTH/2))  { //Antes Commons.BOARD_WIDTH - 2 * width
