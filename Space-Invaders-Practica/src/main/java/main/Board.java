@@ -128,7 +128,7 @@ public class Board extends JPanel  {
 
             if (alien.isDying()) {
 
-                alien.setDying(false);
+                alien.die();
             }
         }
     }
