@@ -11,7 +11,7 @@ public class PlayerTest {
 
     @org.junit.jupiter.params.ParameterizedTest
     @org.junit.jupiter.params.provider.CsvSource(value={ //Cambio en los test debido a modificación en la lógica
-            "13,-1,13",
+            "5,-1,5",
             "321,1,321", //Nuevo caso de prueba antes imposible. Límite derecho.
             "100,1,101"
     })
@@ -66,7 +66,7 @@ public class PlayerTest {
 
     @ParameterizedTest
     @CsvSource({ //Cambio en los test debido al nuevo centro y bordes de la pantalla
-            "167, 284"
+            "167, 280"
     })
     void testInitPlayer(int xEsperada, int yEsperada) {
         Player player = new Player();
